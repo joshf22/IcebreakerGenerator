@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icebreaker Generator</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 10;
+            background-color: #ececec;
+        }
+        h1 {
+            font-weight: bold;
+            font-size: 100px;
+            color: #6528F7;
+            margin-top: 5px; /* Decreased margin */
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-weight: bold;
+            font-size: 36px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #A076F9;
+        }
+        label, button {
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        button.generate-button {
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px; /* Rounded edges */
+            background-color: #A076F9; /* Use your color palette */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button.generate-button:hover {
+            background-color: #6528F7; /* Hover color */
+        }
+
+        p {
+            font-size: 20px;
+            margin: 5px;
+        }
+        ul {
+            font-size: 20px;
+            text-align: center;
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        img {
+            width: 500px;
+            margin: 20px auto;
+            display: block;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .margin-between {
+            margin: 10px;
+        }
+        #copyright {
+            font-size: 12px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Icebreaker Generator</h1>
+    
+    <img src="pic.png" alt="Image">
+
+    <label for="names">Enter names separated by commas:</label>
+    <input type="text" id="names">
+    <button onclick="generateRandomQuestionAndGroups()">Generate</button>
+    
+    <h2 class="margin-between">Question:</h2>
+    <p class="margin-between" id="randomQuestion"></p>
+    
+    <h2 class="margin-between">Groups:</h2>
+    <ul class="margin-between" id="randomGroups"></ul>
+    
+    <p id="copyright">Copyright &copy; 2023 Joshua Fischer</p>
+    
+    <script>
+        const questions = [
+        "If you didn't have to sleep, what would you do with the extra time?",
+        "What job would you be terrible at?",
+        "If you could turn any activity into an Olympic sport, what would you have a good chance at winning a medal for?",
+        "Who's your go-to band or artist when you can't decide on something to listen to?",
+        "What question would you most like to know the answer to?",
+        "What are you interested in that most people haven't heard of?",
+        "What could you give a 40-minute presentation on with no preparation?",
+        "What movie title best describes your life?",
+        "Where is the most relaxing place you've ever been?",
+        "What do you wish you knew more about?",
+        "What's the last adventure you went on?",
+        "When was the last time you changed your opinion or belief about something major?",
+        "When do you feel truly 'alive'?",
+        "Who is/was your most interesting friend?",
+        "What risks are worth taking?",
+        "What are you really good at, but kind of embarrassed that you are good at it?",
+        "What are some of your personal 'rules' that you never break?",
+        "What lie do you tell most often?"
+        ];
+        
+        function getRandomQuestion() {
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            return questions[randomIndex];
+        }
+        
+        function generateRandomQuestionAndGroups() {
+            const namesInput = document.getElementById("names");
+            const names = namesInput.value.split(",").map(name => name.trim());
+            
+            const randomQuestion = getRandomQuestion();
+            const randomGroups = generateRandomGroups(names);
+            
+            displayRandomQuestion(randomQuestion);
+            displayRandomGroups(randomGroups);
+        }
+        
+        function generateRandomGroups(names) {
+            const n = names.length;
+            const shuffledNames = shuffleArray(names);
+            const groups = [];
+            let index = 0;
+            
+            while (index < n) {
+                let groupSize = 3;
+                
+                if ((n - index) % 3 === 1) {
+                    groupSize = 4;
+                } else if ((n - index) % 3 === 2) {
+                    groupSize = 4;
+                }
+                
+                groups.push(shuffledNames.slice(index, index + groupSize));
+                index += groupSize;
+            }
+            
+            return groups;
+        }
+        
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        function displayRandomQuestion(question) {
+            const randomQuestionElement = document.getElementById("randomQuestion");
+            randomQuestionElement.textContent = question;
+        }
+        
+        function displayRandomGroups(groups) {
+            const randomGroupsElement = document.getElementById("randomGroups");
+            randomGroupsElement.innerHTML = "";
+            
+            for (const group of groups) {
+                const groupItem = document.createElement("div");
+                groupItem.textContent = group.join(", ");
+                randomGroupsElement.appendChild(groupItem);
+            }
+        }
+    </script>
+    
+</body>
+</html>
